@@ -1,6 +1,6 @@
 # Vaihe 1 - Määrittely ja suunnittelu
 
-Aiheena on tilavarausjärjestelmä työpaikalle. Toimistolla on muutama neuvotteluhuone, joita voi jatkossa varata omaan käyttöön.
+Aiheena on tilavarausjärjestelmä työpaikalle. Toimistolla on muutama neuvotteluhuone, joita voi jatkossa varata omaan käyttöön päiväksi kerrallaan.
 
 ## 1. Käyttäjäpersoonat
 
@@ -26,7 +26,7 @@ Aiheena on tilavarausjärjestelmä työpaikalle. Toimistolla on muutama neuvotte
 
 1. Varausnäkymä näyttää tilojen saatavuuden.
 
-2. Käyttäjä valitsee tilan, ajan ja vahvistaa varauksen.
+2. Käyttäjä valitsee tilan, päivän ja vahvistaa varauksen.
 
 3. Käyttäjä näkee omat varauksensa ja voi halutessaan peruuttaa varauksen.
 
@@ -34,15 +34,14 @@ Aiheena on tilavarausjärjestelmä työpaikalle. Toimistolla on muutama neuvotte
 
 ## 3. Käyttöliittymän prototyypit
 
-- Etusivu: Käyttäjä näkee jollain tyylillä varaustilanteen
-    - Tätä pitää vielä hieman pyöritellä että miten osaan tämän toteuttaa
-- Käyttäjä voi valita "tee varaus"
-    - Käyttäjä valitsee ajan ja vapaan neukkarin
-    - Voi vahvistaa varauksen
-    - Tarvittaessa tästä voisi myös palata takaisin etusivulle tekemättä  varausta
-- Käyttäjä näkee omat varauksensa ja voi peruuttaa varauksen
+- Etusivu: Käyttäjä näkee varaustilanteen
+    - Käyttäjä voi valita "tee varaus"
+- Varaussivu: Käyttäjä valitsee päivän ja neukkarin
+    - Käyttäjä voi vahvistaa varauksen
+    - Tarvittaessa tästä voisi myös palata takaisin etusivulle tekemättä varausta
+- Omat varaukset-sivu: Käyttäjä näkee omat varauksensa ja voi peruuttaa varauksen
     - Varauksen peruuttamiseen oma yksinkertainen vaihe, jossa vahvistus
-- Käyttäjä voi palata omista varauksista etusivulle
+    - Käyttäjä voi palata omista varauksista etusivulle
 - Lisäksi admin-paneeli hallintaan
 
 ## 4. Tietoarkkitehtuuri ja tekninen suunnittelu
@@ -51,16 +50,16 @@ Aiheena on tilavarausjärjestelmä työpaikalle. Toimistolla on muutama neuvotte
 - Backend: Node.js / Express
 - Tietokanta: SQLite
 - Pilvipalvelu: Azure Static Web Apps
-- Roolit: varaaja, admin
+- Roolit: user, admin
 
 Tiedot:
-- Tilat (nimi, kapasiteetti, kuvaus)
-- Varaaja (nimi, sähköposti)
-- Varaukset (tila_id, varaaja_id, aika)
+- Tilat / Rooms (id, name, capacity, description)
+- Varaaja / Booker (id, name, email)
+- Varaukset / Bookings (id, room_id, booker_id, date)
 
 ## 5. Projektinhallinta ja käyttäjätestaus
 
-- Projektinhallinta GitHubin tekstitiedostossa
+- Projektinhallinta GitHubissa
 - Aikataulu projektin vaiheiden palautusaikataulun mukaan
 - Käyttäjätestaus:
     - Testataan itse ja lisäksi puoliso koekaniiniksi
