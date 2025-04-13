@@ -167,6 +167,27 @@ else if (path === '/bookers' && method === 'GET') {
   });
 }
 
+// GET /all-bookings
+else if (path === '/all-bookings' && method === 'GET') {
+  const query = `
+    SELECT bookings.id, bookings.date, rooms.name AS room_name, bookers.name AS booker_name
+    FROM bookings
+    JOIN rooms ON bookings.room_id = rooms.id
+    JOIN bookers ON bookings.booker_id = bookers.id
+    ORDER BY bookings.date DESC
+  `;
+
+  db.all(query, [], (err, rows) => {
+    if (err) {
+      res.writeHead(500);
+      res.end(JSON.stringify({ error: "Tietokantavirhe" }));
+    } else {
+      res.writeHead(200);
+      res.end(JSON.stringify(rows));
+    }
+  });
+}
+
 
   // 404 fallback
   else {

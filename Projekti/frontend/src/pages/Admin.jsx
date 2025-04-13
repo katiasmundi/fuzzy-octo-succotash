@@ -6,6 +6,7 @@ function Admin() {
   const [capacity, setCapacity] = useState('');
   const [description, setDescription] = useState('');
   const [message, setMessage] = useState('');
+  const [allBookings, setAllBookings] = useState([]);
 
   const fetchRooms = () => {
     fetch('http://localhost:3001/rooms')
@@ -15,6 +16,12 @@ function Admin() {
 
   useEffect(() => {
     fetchRooms();
+
+      // Hae kaikki varaukset
+  fetch('http://localhost:3001/all-bookings')
+  .then(res => res.json())
+  .then(data => setAllBookings(data))
+  .catch(err => console.error('Virhe varauksien haussa:', err));
   }, []);
 
   const handleAddRoom = (e) => {
@@ -64,6 +71,26 @@ function Admin() {
       .catch(() => alert('Virhe huoneen poistossa.'));
   };
 
+  const handleDeleteBooking = (id) => {
+    if (!window.confirm('Haluatko varmasti peruuttaa tämän varauksen?')) return;
+  
+    fetch(`http://localhost:3001/bookings/${id}`, {
+      method: 'DELETE'
+    })
+      .then(res => {
+        if (res.status === 204) {
+          // Poiston jälkeen haetaan varaukset uudelleen
+          fetch('http://localhost:3001/all-bookings')
+            .then(res => res.json())
+            .then(data => setAllBookings(data));
+        } else {
+          throw new Error();
+        }
+      })
+      .catch(() => alert('Varauksen poistaminen epäonnistui.'));
+  };
+  
+
   return (
     <div>
       <h2>Admin-paneeli</h2>
@@ -102,6 +129,16 @@ function Admin() {
           </li>
         ))}
       </ul>
+
+      <h3>Kaikki varaukset</h3>
+<ul>
+  {allBookings.map(booking => (
+    <li key={booking.id}>
+      {booking.room_name}, {booking.date} (varaaja: {booking.booker_name})
+      <button onClick={() => handleDeleteBooking(booking.id)}>Poista</button>
+    </li>
+  ))}
+</ul>
     </div>
   );
 }
