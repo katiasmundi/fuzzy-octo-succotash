@@ -12,28 +12,28 @@ function Booking() {
 
 
   useEffect(() => {
-  // Hae huoneet
-  fetch('http://localhost:3001/rooms')
-    .then(res => res.json())
-    .then(data => setRooms(data))
-    .catch(err => console.error('Virhe haettaessa huoneita:', err));
+    // Hae huoneet
+    fetch('http://localhost:3001/rooms')
+      .then(res => res.json())
+      .then(data => setRooms(data))
+      .catch(err => console.error('Virhe haettaessa huoneita:', err));
 
-  // Hae varaajat
-  fetch('http://localhost:3001/bookers')
-    .then(res => res.json())
-    .then(data => setBookers(data))
-    .catch(err => console.error('Virhe haettaessa varaajia:', err));
-}, []);
+    // Hae varaajat
+    fetch('http://localhost:3001/bookers')
+      .then(res => res.json())
+      .then(data => setBookers(data))
+      .catch(err => console.error('Virhe haettaessa varaajia:', err));
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+
     // Varmistetaan että kaikki kentät on täytetty
     if (!selectedRoom || !date) {
       setMessage('Valitse huone ja päivämäärä.');
       return;
     }
-  
+
     const bookerId = bookerIdInput ? parseInt(bookerIdInput) : 1;
 
     const booking = {
@@ -41,7 +41,7 @@ function Booking() {
       booker_id: bookerId,
       date: date
     };
-  
+
     fetch('http://localhost:3001/bookings', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -60,8 +60,8 @@ function Booking() {
         const selectedRoomObj = rooms.find(room => room.id === parseInt(selectedRoom));
         const roomName = selectedRoomObj ? selectedRoomObj.name : `ID ${selectedRoom}`;
         const bookerId = bookerIdInput ? parseInt(bookerIdInput) : 1;
-const booker = bookers.find(b => b.id === bookerId);
-const bookerName = booker ? booker.name : `Käyttäjä ${bookerId}`;
+        const booker = bookers.find(b => b.id === bookerId);
+        const bookerName = booker ? booker.name : `Käyttäjä ${bookerId}`;
         setMessage(`Varaus onnistui! ${roomName} varattu ${bookerName}lle päivälle ${date}`);
         setDate('');
         setSelectedRoom('');
@@ -75,13 +75,30 @@ const bookerName = booker ? booker.name : `Käyttäjä ${bookerId}`;
         }
       });
   };
-  
+
 
   return (
     <div>
       <h2>Tee varaus</h2>
 
       <form onSubmit={handleSubmit} style={{ maxWidth: '400px' }}>
+        <label>
+          Varaaja:
+          <select
+            value={bookerIdInput}
+            onChange={(e) => setBookerIdInput(e.target.value)}
+            required
+          >
+            <option value="">-- Valitse varaaja --</option>
+            {bookers.map(booker => (
+              <option key={booker.id} value={booker.id}>
+                {booker.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <br /><br />
+
         <label>
           Päivämäärä:
           <input
@@ -110,16 +127,7 @@ const bookerName = booker ? booker.name : `Käyttäjä ${bookerId}`;
         </label>
         <br /><br />
 
-        <label>
-  Varaajan tunniste (jos teet varauksen toisen puolesta):
-  <input
-    type="number"
-    value={bookerIdInput}
-    onChange={(e) => setBookerIdInput(e.target.value)}
-    placeholder="Jätä tyhjäksi jos teet itsellesi"
-  />
-</label>
-<br /><br />
+
 
         <button type="submit">Varaa</button>
       </form>
@@ -128,12 +136,12 @@ const bookerName = booker ? booker.name : `Käyttäjä ${bookerId}`;
 
       <br /><br />
       <button
-  type="button"
-  onClick={() => navigate('/my-bookings')}
-  style={{ marginTop: '1rem' }}
->
-  Näytä omat varaukset
-</button>
+        type="button"
+        onClick={() => navigate('/my-bookings')}
+        style={{ marginTop: '1rem' }}
+      >
+        Näytä omat varaukset
+      </button>
     </div>
   );
 }
