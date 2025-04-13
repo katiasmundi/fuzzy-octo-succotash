@@ -13,7 +13,7 @@ function Home() {
       .then(res => res.json())
       .then(setRooms);
 
-    fetch('http://localhost:3001/bookings')
+    fetch('http://localhost:3001/all-bookings')
       .then(res => res.json())
       .then(setBookings);
   }, []);

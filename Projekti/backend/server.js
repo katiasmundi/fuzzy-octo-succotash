@@ -170,7 +170,7 @@ else if (path === '/bookers' && method === 'GET') {
 // GET /all-bookings
 else if (path === '/all-bookings' && method === 'GET') {
   const query = `
-    SELECT bookings.id, bookings.date, rooms.name AS room_name, bookers.name AS booker_name
+    SELECT bookings.id, bookings.room_id, bookings.date, rooms.name AS room_name, bookers.name AS booker_name
     FROM bookings
     JOIN rooms ON bookings.room_id = rooms.id
     JOIN bookers ON bookings.booker_id = bookers.id
