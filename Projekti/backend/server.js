@@ -1,25 +1,16 @@
 const http = require('http');
 const url = require('url');
+const db = require('./db'); // ← käyttää SQLite-tietokantaa
 
-// "Tietokannat" muistiin
-let rooms = [
-  { id: 1, name: "Neukkari A", capacity: 6, description: "1. kerros" },
-  { id: 2, name: "Neukkari B", capacity: 10, description: "2. kerros" }
-];
-
-let bookings = []; // { id, room_id, booker_id, date }
-
-// Palvelimen luonti
 const server = http.createServer((req, res) => {
   const parsedUrl = url.parse(req.url, true);
   const path = parsedUrl.pathname;
   const method = req.method;
 
-  // Asetetaan headerit
   res.setHeader('Content-Type', 'application/json');
   res.setHeader('Access-Control-Allow-Origin', '*');
 
-  // Preflight-tuki (CORS)
+  // CORS preflight
   if (method === 'OPTIONS') {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -28,102 +19,135 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // Reitit
+  // --- REITIT ---
 
-  // 1. GET /rooms
+  // GET /rooms
   if (path === '/rooms' && method === 'GET') {
-    res.writeHead(200);
-    res.end(JSON.stringify(rooms));
-  }
-
-  // 2. GET /bookings?date=YYYY-MM-DD
-  else if (path === '/bookings' && method === 'GET') {
-    const date = parsedUrl.query.date;
-    const filtered = bookings.filter(b => b.date === date);
-    res.writeHead(200);
-    res.end(JSON.stringify(filtered));
-  }
-
-  // 3. POST /bookings
-  else if (path === '/bookings' && method === 'POST') {
-    let body = '';
-    req.on('data', chunk => body += chunk);
-    req.on('end', () => {
-      const data = JSON.parse(body);
-      const newBooking = {
-        id: bookings.length + 1,
-        room_id: data.room_id,
-        booker_id: data.booker_id,
-        date: data.date
-      };
-      bookings.push(newBooking);
-      res.writeHead(201);
-      res.end(JSON.stringify(newBooking));
+    db.all("SELECT * FROM rooms", (err, rows) => {
+      if (err) {
+        res.writeHead(500);
+        res.end(JSON.stringify({ error: "Tietokantavirhe" }));
+      } else {
+        res.writeHead(200);
+        res.end(JSON.stringify(rows));
+      }
     });
   }
 
-  // 4. DELETE /bookings/:id
-  else if (path.startsWith('/bookings/') && method === 'DELETE') {
-    const id = parseInt(path.split('/')[2]);
-    const index = bookings.findIndex(b => b.id === id);
-    if (index !== -1) {
-      bookings.splice(index, 1);
-      res.writeHead(204);
-      res.end();
-    } else {
-      res.writeHead(404);
-      res.end(JSON.stringify({ error: "Varausta ei löytynyt" }));
-    }
-  }
-
-  // 5. GET /my-bookings/:booker_id
-  else if (path.startsWith('/my-bookings/') && method === 'GET') {
-    const id = parseInt(path.split('/')[2]);
-    const userBookings = bookings.filter(b => b.booker_id === id);
-    res.writeHead(200);
-    res.end(JSON.stringify(userBookings));
-  }
-
-  // 6. POST /rooms
+  // POST /rooms
   else if (path === '/rooms' && method === 'POST') {
     let body = '';
     req.on('data', chunk => body += chunk);
     req.on('end', () => {
       const data = JSON.parse(body);
-      const newRoom = {
-        id: rooms.length + 1,
-        name: data.name,
-        capacity: data.capacity,
-        description: data.description
-      };
-      rooms.push(newRoom);
-      res.writeHead(201);
-      res.end(JSON.stringify(newRoom));
+      db.run(
+        `INSERT INTO rooms (name, capacity, description) VALUES (?, ?, ?)`,
+        [data.name, data.capacity, data.description],
+        function (err) {
+          if (err) {
+            res.writeHead(500);
+            res.end(JSON.stringify({ error: "Huoneen lisäys epäonnistui" }));
+          } else {
+            res.writeHead(201);
+            res.end(JSON.stringify({ id: this.lastID }));
+          }
+        }
+      );
     });
   }
 
-  // 7. DELETE /rooms/:id
+  // DELETE /rooms/:id
   else if (path.startsWith('/rooms/') && method === 'DELETE') {
     const id = parseInt(path.split('/')[2]);
-    const index = rooms.findIndex(r => r.id === id);
-    if (index !== -1) {
-      rooms.splice(index, 1);
-      res.writeHead(204);
-      res.end();
-    } else {
-      res.writeHead(404);
-      res.end(JSON.stringify({ error: "Huonetta ei löytynyt" }));
-    }
+    db.run(`DELETE FROM rooms WHERE id = ?`, [id], function (err) {
+      if (err) {
+        res.writeHead(500);
+        res.end(JSON.stringify({ error: "Poisto epäonnistui" }));
+      } else if (this.changes === 0) {
+        res.writeHead(404);
+        res.end(JSON.stringify({ error: "Huonetta ei löytynyt" }));
+      } else {
+        res.writeHead(204);
+        res.end();
+      }
+    });
   }
 
-  // 404 - Tuntematon reitti
+  // GET /bookings?date=YYYY-MM-DD
+  else if (path === '/bookings' && method === 'GET') {
+    const date = parsedUrl.query.date;
+    db.all(`SELECT * FROM bookings WHERE date = ?`, [date], (err, rows) => {
+      if (err) {
+        res.writeHead(500);
+        res.end(JSON.stringify({ error: "Tietokantavirhe" }));
+      } else {
+        res.writeHead(200);
+        res.end(JSON.stringify(rows));
+      }
+    });
+  }
+
+  // POST /bookings
+  else if (path === '/bookings' && method === 'POST') {
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', () => {
+      const data = JSON.parse(body);
+      db.run(
+        `INSERT INTO bookings (room_id, booker_id, date) VALUES (?, ?, ?)`,
+        [data.room_id, data.booker_id, data.date],
+        function (err) {
+          if (err) {
+            res.writeHead(500);
+            res.end(JSON.stringify({ error: "Varaus epäonnistui" }));
+          } else {
+            res.writeHead(201);
+            res.end(JSON.stringify({ id: this.lastID }));
+          }
+        }
+      );
+    });
+  }
+
+  // DELETE /bookings/:id
+  else if (path.startsWith('/bookings/') && method === 'DELETE') {
+    const id = parseInt(path.split('/')[2]);
+    db.run(`DELETE FROM bookings WHERE id = ?`, [id], function (err) {
+      if (err) {
+        res.writeHead(500);
+        res.end(JSON.stringify({ error: "Poisto epäonnistui" }));
+      } else if (this.changes === 0) {
+        res.writeHead(404);
+        res.end(JSON.stringify({ error: "Varausta ei löytynyt" }));
+      } else {
+        res.writeHead(204);
+        res.end();
+      }
+    });
+  }
+
+  // GET /my-bookings/:booker_id
+  else if (path.startsWith('/my-bookings/') && method === 'GET') {
+    const booker_id = parseInt(path.split('/')[2]);
+    db.all(`SELECT * FROM bookings WHERE booker_id = ?`, [booker_id], (err, rows) => {
+      if (err) {
+        res.writeHead(500);
+        res.end(JSON.stringify({ error: "Tietokantavirhe" }));
+      } else {
+        res.writeHead(200);
+        res.end(JSON.stringify(rows));
+      }
+    });
+  }
+
+  // 404 fallback
   else {
     res.writeHead(404);
     res.end(JSON.stringify({ error: "Reittiä ei löytynyt" }));
   }
 });
 
-// Käynnistetään palvelin
+// Palvelimen käynnistys
 server.listen(3001, () => {
   console.log("Node API toimii osoitteessa http://localhost:3001");
 });
