@@ -136,12 +136,27 @@ else if (path === '/bookings' && method === 'POST') {
 else if (path.startsWith('/my-bookings/') && method === 'GET') {
   const booker_id = parseInt(path.split('/')[2]);
   const query = `
-    SELECT bookings.id, bookings.date, rooms.name AS room_name
-    FROM bookings
-    JOIN rooms ON bookings.room_id = rooms.id
-    WHERE bookings.booker_id = ?
-  `;
+  SELECT bookings.id, bookings.date, rooms.name AS room_name, bookers.name AS booker_name
+  FROM bookings
+  JOIN rooms ON bookings.room_id = rooms.id
+  JOIN bookers ON bookings.booker_id = bookers.id
+  WHERE bookings.booker_id = ?
+`;
+
   db.all(query, [booker_id], (err, rows) => {
+    if (err) {
+      res.writeHead(500);
+      res.end(JSON.stringify({ error: "Tietokantavirhe" }));
+    } else {
+      res.writeHead(200);
+      res.end(JSON.stringify(rows));
+    }
+  });
+}
+
+// GET /bookers
+else if (path === '/bookers' && method === 'GET') {
+  db.all("SELECT * FROM bookers", (err, rows) => {
     if (err) {
       res.writeHead(500);
       res.end(JSON.stringify({ error: "Tietokantavirhe" }));

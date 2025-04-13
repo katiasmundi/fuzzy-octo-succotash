@@ -32,6 +32,25 @@ db.serialize(() => {
       db.run(`INSERT INTO rooms (name, capacity, description) VALUES ('Neukkari Luova Luola', 10, '2. kerros')`);
     }
   });
+
+
+  // VARAAJAT
+  // Luo taulu bookers
+  db.run(`
+    CREATE TABLE IF NOT EXISTS bookers (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL
+    )
+  `);
+  
+  // Lisää testikäyttäjiä jos taulu tyhjä
+  db.get("SELECT COUNT(*) as count FROM bookers", (err, row) => {
+    if (row.count === 0) {
+      db.run(`INSERT INTO bookers (name) VALUES ('Teemu Työntekijä')`);
+      db.run(`INSERT INTO bookers (name) VALUES ('Arttu Assistentti')`);
+      db.run(`INSERT INTO bookers (name) VALUES ('Ulla Ylläpitäjä')`);
+    }
+  });
 });
 
 module.exports = db;

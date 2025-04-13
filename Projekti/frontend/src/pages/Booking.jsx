@@ -3,17 +3,27 @@ import { useNavigate } from 'react-router-dom';
 
 function Booking() {
   const [rooms, setRooms] = useState([]);
+  const [bookers, setBookers] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState('');
   const [date, setDate] = useState('');
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
+  const [bookerIdInput, setBookerIdInput] = useState(''); //varauksen voi tehdä toisen puolesta
+
 
   useEffect(() => {
-    fetch('http://localhost:3001/rooms')
-      .then(res => res.json())
-      .then(data => setRooms(data))
-      .catch(err => console.error('Virhe haettaessa huoneita:', err));
-  }, []);
+  // Hae huoneet
+  fetch('http://localhost:3001/rooms')
+    .then(res => res.json())
+    .then(data => setRooms(data))
+    .catch(err => console.error('Virhe haettaessa huoneita:', err));
+
+  // Hae varaajat
+  fetch('http://localhost:3001/bookers')
+    .then(res => res.json())
+    .then(data => setBookers(data))
+    .catch(err => console.error('Virhe haettaessa varaajia:', err));
+}, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -24,9 +34,11 @@ function Booking() {
       return;
     }
   
+    const bookerId = bookerIdInput ? parseInt(bookerIdInput) : 1;
+
     const booking = {
       room_id: parseInt(selectedRoom),
-      booker_id: 1, // Testikäyttäjä. Voidaan myöhemmin kysyä oikeasti.
+      booker_id: bookerId,
       date: date
     };
   
@@ -47,7 +59,10 @@ function Booking() {
       .then(data => {
         const selectedRoomObj = rooms.find(room => room.id === parseInt(selectedRoom));
         const roomName = selectedRoomObj ? selectedRoomObj.name : `ID ${selectedRoom}`;
-        setMessage(`Varaus onnistui! ${roomName} varattu päivälle ${date}`);
+        const bookerId = bookerIdInput ? parseInt(bookerIdInput) : 1;
+const booker = bookers.find(b => b.id === bookerId);
+const bookerName = booker ? booker.name : `Käyttäjä ${bookerId}`;
+        setMessage(`Varaus onnistui! ${roomName} varattu ${bookerName}lle päivälle ${date}`);
         setDate('');
         setSelectedRoom('');
       })
@@ -95,11 +110,23 @@ function Booking() {
         </label>
         <br /><br />
 
+        <label>
+  Varaajan tunniste (jos teet varauksen toisen puolesta):
+  <input
+    type="number"
+    value={bookerIdInput}
+    onChange={(e) => setBookerIdInput(e.target.value)}
+    placeholder="Jätä tyhjäksi jos teet itsellesi"
+  />
+</label>
+<br /><br />
+
         <button type="submit">Varaa</button>
       </form>
 
       {message && <p style={{ marginTop: '1rem' }}>{message}</p>}
 
+      <br /><br />
       <button
   type="button"
   onClick={() => navigate('/my-bookings')}
