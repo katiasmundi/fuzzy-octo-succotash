@@ -24,13 +24,13 @@ Aiheena on tilavarausjärjestelmä työpaikalle. Toimistolla on muutama neuvotte
 
 ## 2. Käyttötapaukset ja -tilanteet
 
-1. Varausnäkymä näyttää tilojen saatavuuden.
+1. Varausnäkymä näyttää tilojen saatavuuden ko. loppuviikon ajalta: punainen varattu, vihreä vapaa. Viikkoja voi selata etusivulla nuolesta eteen- ja taaksepäin. Etusivulta pääsee siirtymään suoraan napista varaussivulle (ja myös muille sivuille yläpalkista).
 
-2. Käyttäjä valitsee tilan, päivän ja vahvistaa varauksen.
+2. Varaussivulla: Askel 1. Valitse varaajan nimi. Askel 2. Valitse päivämäärä. Askel 3. Valitse neukkari. Askel 4. Klikkaa "varaa". Käyttäjä saa tiedon onnistuneesta tai epäonnistuneesta varauksesta.
 
-3. Käyttäjä näkee omat varauksensa ja voi halutessaan peruuttaa varauksen.
+3. Käyttäjä näkee omat varauksensa toisella sivulla ja voi siellä halutessaan peruuttaa varauksen ko. varauksen kohdalta napista.
 
-4. Admin voi hallinnoida varauksia ja tiloja.
+4. Admin voi hallinnoida varauksia ja tiloja erillisellä sivulla, jossa näkyy listana kaikki neukkarit ja varaukset sekä käyttäjät. Näissä on selkeät napit lisää tai poista jne.
 
 ## 3. Käyttöliittymän prototyypit
 
