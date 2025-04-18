@@ -2,6 +2,8 @@
 
 Projekti toteutettiin Reactilla (frontend), Node.js:llä (backend) ja SQLite-tietokannalla. Käyttöliittymästä pyrittiin tekemään yksinkertainen, mutta selkeä ja nykyaikainen. Tässä raportissa kuvataan järjestelmän rakenne, toiminnallisuudet ja keskeiset tekniset ratkaisut.
 
+Sivuston oli tarkoitus toimia Pilvipalvelu: Azure Static Web Apps:ssa, mutta aika loppui ennen kuin sain sen toimimaan. Azuren kautta sivu näkyy vain valkoisena. Lokaalisti sivusto toimii hyvin.
+
 ## 1. Ympäristö
 
 Projekti rakennettiin Reactin ja Node.js:n avulla. Kehitysympäristönä käytettiin Visual Studio Codea ja projektia hallittiin Gitin ja GitHubin avulla. Frontend pyörii paikallisesti Viten avulla ja backend toimii Node.js:llä käyttäen Express-tyylistä HTTP-palvelinta. Tietokantana on kevyt SQLite-tietokanta.
@@ -54,11 +56,13 @@ Tuplavaraukset on estetty backendissä.
 
 ## 7. Koodin laatu ja dokumentointi
 
-Koodi on jaettu loogisiin komponentteihin ja noudattaa selkeitä nimikäytäntöjä. Kommentteja on lisätty erityisesti backendin reitteihin. CSS on keskitetty ja selkeästi nimetty. Projektia on kehitetty vaiheittain, ja Gitin commit-historia toimii osittain myös dokumentaationa.
+Koodi on jaettu loogisiin komponentteihin ja noudattaa selkeitä nimikäytäntöjä. CSS on keskitetty ja selkeästi nimetty. Projektia on kehitetty vaiheittain, ja Gitin commit-historia toimii osittain myös dokumentaationa.
 
 ## 8. Testaus ja virheenkäsittely
 
-Sovellusta on testattu manuaalisesti eri tilanteilla, mm. tuplavarauksilla ja puuttuvilla kentillä. Varauslomakkeessa on selkeä virheilmoitus, jos kenttiä ei ole täytetty tai varaus epäonnistuu. Backend palauttaa selkeitä virhekoodeja ja -viestejä virhetilanteissa.
+Sovellusta on testattu manuaalisesti eri tilanteilla, mm. tuplavarauksilla ja puuttuvilla kentillä. Varauslomakkeessa on selkeä virheilmoitus, jos kenttiä ei ole täytetty tai varaus epäonnistuu. Backend palauttaa selkeitä virhekoodeja ja -viestejä virhetilanteissa. On testattu myös useampaa eri selainta ja tehty sen perusteella pieniä muutoksia.
+
+Puoliso testasi myös sivuja ja ne ovat niin helppokäyttöiset, että kysymyksiä ei tullut. Kehitysehdotuksia kylläkin pitkä lista (mm. varausten muokkaus), joten katsotaan saisiko niitä tehtyä seuraavassa vaiheessa. 
 
 ## 9. Käyttöliittymä ja vuorovaikutus
 

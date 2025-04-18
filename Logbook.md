@@ -9,4 +9,4 @@
 | 14.4.2025 | 1 | Vaihe 1  | Tehtävän korjaukset |
 | 16.4.2025 | 4 | Vaihe 2  | Ulkoasun suunnittelu ja raportin kirjoitus |
 | 18.4.2025 | 5 | Vaihe 2  | Ulkoasun suunnittelu ja raportin kirjoitus |
-| 18.4.2025 | x | Vaihe 2  | Pilvipalvelun rakentaminen ja tehtävän viimeistely ja palautus |
+| 18.4.2025 | 5 | Vaihe 2  | Pilvipalvelun rakentaminen ja tehtävän viimeistely ja palautus |
