@@ -107,6 +107,7 @@ function Admin() {
           <input
             type="number"
             value={capacity}
+            min={1}
             onChange={(e) => setCapacity(e.target.value)}
             required
           />
