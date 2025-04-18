@@ -1,10 +1,18 @@
 {
-    "mimeTypes": {
-      ".js": "application/javascript",
-      ".mjs": "application/javascript"
-    },
-    "navigationFallback": {
-      "rewrite": "/index.html"
+  "mimeTypes": {
+    ".js": "application/javascript",
+    ".mjs": "application/javascript"
+  },
+  "navigationFallback": {
+    "rewrite": "/index.html"
+  },
+  "routes": [
+    {
+      "route": "/assets/*",
+      "headers": {
+        "Content-Type": "application/javascript"
+      }
     }
-  }
+  ]
+}
   
