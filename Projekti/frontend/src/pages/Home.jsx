@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../App.css';
 
 function Home() {
   const [rooms, setRooms] = useState([]);
@@ -19,24 +20,27 @@ function Home() {
   }, []);
 
   // Päivitä näkymän päivämäärät: kuluvan päivän ja loppuviikon (ma–pe)
-  const getWeekDays = () => {
+  const getWeekDays = (weekOffset = 0) => {
     const today = new Date();
     today.setDate(today.getDate() + weekOffset * 7);
 
-    const currentDay = today.getDay(); // 0=su, 1=ma, ..., 6=la
-    const remainingWeekdays = [];
+    // Get Monday of the current week
+    const currentDay = today.getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
+    const mondayOffset = (currentDay === 0 ? -6 : 1 - currentDay); // shift Sunday to previous Monday
+    const monday = new Date(today);
+    monday.setDate(today.getDate() + mondayOffset);
+
+    const weekdays = [];
 
     for (let i = 0; i < 5; i++) {
-      const date = new Date(today);
-      const dayOffset = i - (currentDay - 1);
-      if (dayOffset >= 0) {
-        date.setDate(today.getDate() + dayOffset);
-        remainingWeekdays.push(date);
-      }
+      const date = new Date(monday);
+      date.setDate(monday.getDate() + i);
+      weekdays.push(date);
     }
 
-    return remainingWeekdays;
+    return weekdays;
   };
+
 
   const formatDate = (date) => {
     return date.toISOString().split('T')[0]; // yyyy-mm-dd
@@ -54,17 +58,14 @@ function Home() {
     return bookings.some(b => b.room_id === roomId && b.date === dateStr);
   };
 
-  const days = getWeekDays();
+  const days = getWeekDays(weekOffset);
 
   return (
-    <div>
+    <div className="container">
       <h2>Varaustilanne ({formatDayName(days[0])} – {formatDayName(days[days.length - 1])})</h2>
 
-      <button onClick={() => navigate('/booking')} style={{ marginBottom: '1rem' }}>
-        Tee varaus
-      </button>
-
-      <table border="1" cellPadding="8">
+      <button onClick={() => navigate('/booking')}>Tee varaus</button>
+      <table>
         <thead>
           <tr>
             <th>Huone</th>
@@ -90,9 +91,9 @@ function Home() {
         </tbody>
       </table>
 
-      <div style={{ marginTop: '1rem' }}>
+      <div className='pagination'>
         <button onClick={() => setWeekOffset(weekOffset - 1)}>« Edellinen viikko</button>
-        <button onClick={() => setWeekOffset(weekOffset + 1)} style={{ marginLeft: '1rem' }}>
+        <button onClick={() => setWeekOffset(weekOffset + 1)}>
           Seuraava viikko »
         </button>
       </div>

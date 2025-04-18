@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../App.css';
 
 function Booking() {
   const [rooms, setRooms] = useState([]);
@@ -78,10 +79,9 @@ function Booking() {
 
 
   return (
-    <div>
+    <div className="container">
       <h2>Tee varaus</h2>
-
-      <form onSubmit={handleSubmit} style={{ maxWidth: '400px' }}>
+      <form onSubmit={handleSubmit}>
         <label>
           Varaaja:
           <select
@@ -105,6 +105,7 @@ function Booking() {
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
+            onFocus={(e) => e.target.showPicker?.()} // Avaa kalenterin koko painikkeesta
             required
           />
         </label>
@@ -132,13 +133,12 @@ function Booking() {
         <button type="submit">Varaa</button>
       </form>
 
-      {message && <p style={{ marginTop: '1rem' }}>{message}</p>}
+      {message && <p>{message}</p>}
 
       <br /><br />
       <button
         type="button"
         onClick={() => navigate('/my-bookings')}
-        style={{ marginTop: '1rem' }}
       >
         Näytä omat varaukset
       </button>

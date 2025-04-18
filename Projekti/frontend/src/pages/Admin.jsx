@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import '../App.css';
 
 function Admin() {
   const [rooms, setRooms] = useState([]);
@@ -17,11 +18,11 @@ function Admin() {
   useEffect(() => {
     fetchRooms();
 
-      // Hae kaikki varaukset
-  fetch('http://localhost:3001/all-bookings')
-  .then(res => res.json())
-  .then(data => setAllBookings(data))
-  .catch(err => console.error('Virhe varauksien haussa:', err));
+    // Hae kaikki varaukset
+    fetch('http://localhost:3001/all-bookings')
+      .then(res => res.json())
+      .then(data => setAllBookings(data))
+      .catch(err => console.error('Virhe varauksien haussa:', err));
   }, []);
 
   const handleAddRoom = (e) => {
@@ -73,7 +74,7 @@ function Admin() {
 
   const handleDeleteBooking = (id) => {
     if (!window.confirm('Haluatko varmasti peruuttaa tämän varauksen?')) return;
-  
+
     fetch(`http://localhost:3001/bookings/${id}`, {
       method: 'DELETE'
     })
@@ -89,14 +90,14 @@ function Admin() {
       })
       .catch(() => alert('Varauksen poistaminen epäonnistui.'));
   };
-  
+
 
   return (
-    <div>
+    <div className='container'>
       <h2>Admin-paneeli</h2>
 
       <h3>Lisää uusi huone</h3>
-      <form onSubmit={handleAddRoom} style={{ maxWidth: '400px' }}>
+      <form onSubmit={handleAddRoom}>
         <label>
           Nimi:
           <input value={name} onChange={(e) => setName(e.target.value)} required />
@@ -117,7 +118,7 @@ function Admin() {
         <button type="submit">Lisää huone</button>
       </form>
 
-      {message && <p style={{ marginTop: '1rem' }}>{message}</p>}
+      {message && <p>{message}</p>}
 
       <h3>Olemassa olevat huoneet</h3>
       <ul>
@@ -131,14 +132,14 @@ function Admin() {
       </ul>
 
       <h3>Kaikki varaukset</h3>
-<ul>
-  {allBookings.map(booking => (
-    <li key={booking.id}>
-      {booking.room_name}, {booking.date} (varaaja: {booking.booker_name})
-      <button onClick={() => handleDeleteBooking(booking.id)}>Poista</button>
-    </li>
-  ))}
-</ul>
+      <ul>
+        {allBookings.map(booking => (
+          <li key={booking.id}>
+            {booking.room_name}, {booking.date} (varaaja: {booking.booker_name})
+            <button onClick={() => handleDeleteBooking(booking.id)}>Poista</button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

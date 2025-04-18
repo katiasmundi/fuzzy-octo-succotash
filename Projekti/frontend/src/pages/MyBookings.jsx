@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import '../App.css';
 
 function MyBookings() {
   const [bookings, setBookings] = useState([]);
@@ -50,7 +51,7 @@ function MyBookings() {
   };
 
   return (
-    <div>
+    <div className='container'>
       <h2>Omat varaukset</h2>
 
       {loading && <p>Ladataan varauksia...</p>}
