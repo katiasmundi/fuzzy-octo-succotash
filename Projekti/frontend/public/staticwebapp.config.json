@@ -4,8 +4,7 @@
       ".mjs": "application/javascript"
     },
     "navigationFallback": {
-      "rewrite": "/index.html",
-      "exclude": ["/static/*", "/images/*", "/favicon.ico"]
+      "rewrite": "/index.html"
     }
   }
   
