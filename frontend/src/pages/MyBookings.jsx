@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../App.css';
 
 function MyBookings() {
@@ -6,6 +7,7 @@ function MyBookings() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const bookerId = 1; // Testikäyttäjä
+  const navigate = useNavigate();
 
   // Hae varaukset
   const fetchBookings = () => {
@@ -16,9 +18,11 @@ function MyBookings() {
         return res.json();
       })
       .then(data => {
-        setBookings(data);
+        const sorted = data.sort((a, b) => new Date(b.date) - new Date(a.date));
+        setBookings(sorted);
         setLoading(false);
       })
+
       .catch(err => {
         console.error(err);
         setError('Varauksien haku epäonnistui');
@@ -63,6 +67,10 @@ function MyBookings() {
           <li key={booking.id}>
             Huone {booking.room_name}, päivämäärä {booking.date}{' '}
             <button onClick={() => cancelBooking(booking.id)}>Peruuta</button>
+            {' '}
+            <button onClick={() => navigate(`/admin/edit-booking/${booking.id}`, { state: { from: 'my-bookings' } })}>
+              Muokkaa
+            </button>
           </li>
         ))}
       </ul>

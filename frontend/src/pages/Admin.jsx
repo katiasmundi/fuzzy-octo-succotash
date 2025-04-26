@@ -22,7 +22,10 @@ function Admin() {
   const fetchAllBookings = () => {
     fetch('http://localhost:3001/all-bookings')
       .then(res => res.json())
-      .then(data => setAllBookings(data))
+      .then(data => {
+        const sorted = data.sort((a, b) => new Date(b.date) - new Date(a.date));
+        setAllBookings(sorted);
+      })
       .catch(err => console.error('Virhe varauksien haussa:', err));
   };
 
@@ -149,7 +152,9 @@ function Admin() {
             {' '}
             <button onClick={() => handleDeleteBooking(booking.id)}>Poista</button>
             {' '}
-            <button onClick={() => handleEditBooking(booking.id)}>Muokkaa</button> {/* Uusi nappi */}
+            <button onClick={() => navigate(`/admin/edit-booking/${booking.id}`, { state: { from: 'admin' } })}>
+              Muokkaa
+            </button>
           </li>
         ))}
       </ul>

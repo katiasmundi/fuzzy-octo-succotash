@@ -144,9 +144,16 @@ const server = http.createServer((req, res) => {
         function (err) {
           if (err) {
             console.error("Päivitysvirhe:", err.message);
-            res.writeHead(500);
-            res.end(JSON.stringify({ error: "Varausta ei voitu päivittää" }));
-          } else {
+            if (err.message.includes('UNIQUE constraint failed')) {
+              res.writeHead(409); // Conflict
+              res.end(JSON.stringify({ error: "Huone on jo varattu kyseiselle päivälle" }));
+            } else {
+              res.writeHead(500);
+              res.end(JSON.stringify({ error: "Varausta ei voitu päivittää" }));
+            }
+          }
+          
+          else {
             res.writeHead(200);
             res.end(JSON.stringify({ success: true }));
           }
