@@ -1,7 +1,8 @@
 {
   "mimeTypes": {
     ".js": "application/javascript",
-    ".mjs": "application/javascript"
+    ".css": "text/css",
+    ".json": "application/json"
   },
   "navigationFallback": {
     "rewrite": "/index.html"
