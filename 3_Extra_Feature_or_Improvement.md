@@ -43,11 +43,13 @@ Tämä kertoo Vite-käännökselle, että käytetään uutta JSX-runtimea, jollo
 
 - GitHub Actions workflow-tiedostoon (azure-static-web-apps.yml) lisättiin uusi vaihe ennen deployausta:
 
-name: Install dependencies and build
-run: |
-    - cd frontend
-    - npm install
-    - npm run build
+```
+- name: Install dependencies and build
+  run: |
+    cd frontend
+    npm install
+    npm run build
+```
 
 Tämä vaihe varmistaa, että projekti rakennetaan (npm run build) ennen kuin se ladataan Azureen. Ilman tätä vaihetta Azure olisi yrittänyt palvella raakaa lähdekoodia (src/-kansiosta), mikä johti MIME-tyyppivirheisiin selaimessa.
 
