@@ -139,7 +139,7 @@ function Admin() {
           <li key={room.id}>
             {room.name} ({room.capacity} hlö) – {room.description}
             {' '}
-            <button onClick={() => handleDeleteRoom(room.id)}>Poista</button>
+            <button className='red' onClick={() => handleDeleteRoom(room.id)}>Poista</button>
           </li>
         ))}
       </ul>
@@ -150,7 +150,7 @@ function Admin() {
           <li key={booking.id}>
             {booking.room_name}, {booking.date} (varaaja: {booking.booker_name})
             {' '}
-            <button onClick={() => handleDeleteBooking(booking.id)}>Poista</button>
+            <button className='red' onClick={() => handleDeleteBooking(booking.id)}>Poista</button>
             {' '}
             <button onClick={() => navigate(`/admin/edit-booking/${booking.id}`, { state: { from: 'admin' } })}>
               Muokkaa

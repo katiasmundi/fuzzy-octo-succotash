@@ -66,7 +66,7 @@ function MyBookings() {
         {bookings.map(booking => (
           <li key={booking.id}>
             Huone {booking.room_name}, päivämäärä {booking.date}{' '}
-            <button onClick={() => cancelBooking(booking.id)}>Peruuta</button>
+            <button className='red' onClick={() => cancelBooking(booking.id)}>Peruuta</button>
             {' '}
             <button onClick={() => navigate(`/admin/edit-booking/${booking.id}`, { state: { from: 'my-bookings' } })}>
               Muokkaa
