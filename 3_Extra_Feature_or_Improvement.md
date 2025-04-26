@@ -58,6 +58,8 @@ Tämä vaihe varmistaa, että projekti rakennetaan (npm run build) ennen kuin se
 package*
 vite*
 
+https://victorious-sea-0f1cafc03.6.azurestaticapps.net/admin
+
 ### Muita muutoksia
 
 Lisäksi muutin poista-napit punaiseksi, jotta ne erottuvat helposti muista napeista. Tämän lisäksi muutin varauslistan esitysjärjestystä niin, että kauimpana tulevaisuudessa oleva varaus on ylimmäisenä, jotta tietyn varauksen löytää helpommin.
