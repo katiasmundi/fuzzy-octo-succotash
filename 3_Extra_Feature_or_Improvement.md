@@ -2,7 +2,7 @@
 
 ## Valittu käyttötapaus tai toiminnon parannus
 
-### Varausten muokkaus (PUT):
+### Varausten muokkaus (PUT)
 
 Kehitysvaiheessa valitsin testausvaiheen palautteen perusteella parannettavaksi käyttäjän mahdollisuuden muokata olemassa olevia varauksia. Halusin lisätä järjestelmään mahdollisuuden, että sekä tavalliset käyttäjät että admin voivat muokata jo tehtyjä varauksia. Valitsin tämän, koska se parantaa sovelluksen käytettävyyttä merkittävästi ja tekee varausten hallinnasta joustavampaa.
 
@@ -41,7 +41,7 @@ Mitä lisättiin tai muutettiin:
 "jsxRuntime: 'automatic'"
 Tämä kertoo Vite-käännökselle, että käytetään uutta JSX-runtimea, jolloin ei tarvitse erikseen tuoda "import React" tiedostoihin. Tämä ratkaisi tuotantoversiossa tulleen virheen: "React is not defined".
 
-. GitHub Actions workflow-tiedostoon (azure-static-web-apps.yml) lisättiin uusi vaihe ennen deployausta:
+- GitHub Actions workflow-tiedostoon (azure-static-web-apps.yml) lisättiin uusi vaihe ennen deployausta:
 
 - name: Install dependencies and build
   run: |
