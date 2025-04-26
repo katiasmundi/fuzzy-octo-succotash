@@ -5,7 +5,9 @@ import Home from './pages/Home';
 import Booking from './pages/Booking';
 import MyBookings from './pages/MyBookings';
 import Admin from './pages/Admin';
+import EditBooking from './pages/EditBooking';
 import './App.css';
+
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
           <Route path="/booking" element={<Booking />} />
           <Route path="/my-bookings" element={<MyBookings />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/admin/edit-booking/:id" element={<EditBooking />} />
+
         </Routes>
 
         <footer className="footer">

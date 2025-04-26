@@ -10,3 +10,5 @@
 | 16.4.2025 | 4 | Vaihe 2  | Ulkoasun suunnittelu ja raportin kirjoitus |
 | 18.4.2025 | 5 | Vaihe 2  | Ulkoasun suunnittelu ja raportin kirjoitus |
 | 18.4.2025 | 5 | Vaihe 2  | Pilvipalvelun rakentaminen ja tehtävän viimeistely ja palautus |
+| 25.4.2025 | 3 | Vaihe 3  | Lisäominaisuuden rakentaminen (PUT) |
+| 26.4.2025 | x | Vaihe 3  | Lisäominaisuuden rakentaminen (PUT) |

@@ -12,7 +12,7 @@ const server = http.createServer((req, res) => {
 
   // CORS preflight
   if (method === 'OPTIONS') {
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     res.writeHead(204);
     res.end();
@@ -87,33 +87,32 @@ const server = http.createServer((req, res) => {
     });
   }
 
-// POST /bookings
-else if (path === '/bookings' && method === 'POST') {
-  let body = '';
-  req.on('data', chunk => body += chunk);
-  req.on('end', () => {
-    const data = JSON.parse(body);
-    db.run(
-      `INSERT INTO bookings (room_id, booker_id, date) VALUES (?, ?, ?)`,
-      [data.room_id, data.booker_id, data.date],
-      function (err) {
-        if (err) {
-          if (err.message.includes('UNIQUE constraint failed')) {
-            res.writeHead(409); // Tuplavaraus – conflict
-            res.end(JSON.stringify({ error: "Huone on jo varattu kyseiselle päivälle" }));
+  // POST /bookings
+  else if (path === '/bookings' && method === 'POST') {
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', () => {
+      const data = JSON.parse(body);
+      db.run(
+        `INSERT INTO bookings (room_id, booker_id, date) VALUES (?, ?, ?)`,
+        [data.room_id, data.booker_id, data.date],
+        function (err) {
+          if (err) {
+            if (err.message.includes('UNIQUE constraint failed')) {
+              res.writeHead(409); // Tuplavaraus – conflict
+              res.end(JSON.stringify({ error: "Huone on jo varattu kyseiselle päivälle" }));
+            } else {
+              res.writeHead(500);
+              res.end(JSON.stringify({ error: "Varaus epäonnistui" }));
+            }
           } else {
-            res.writeHead(500);
-            res.end(JSON.stringify({ error: "Varaus epäonnistui" }));
+            res.writeHead(201);
+            res.end(JSON.stringify({ id: this.lastID }));
           }
-        } else {
-          res.writeHead(201);
-          res.end(JSON.stringify({ id: this.lastID }));
         }
-      }
-    );
-  });
-}
-
+      );
+    });
+  }
 
   // DELETE /bookings/:id
   else if (path.startsWith('/bookings/') && method === 'DELETE') {
@@ -132,10 +131,34 @@ else if (path === '/bookings' && method === 'POST') {
     });
   }
 
-// GET /my-bookings/:booker_id
-else if (path.startsWith('/my-bookings/') && method === 'GET') {
-  const booker_id = parseInt(path.split('/')[2]);
-  const query = `
+  // PUT /bookings/:id – varauksen muokkaus
+  else if (path.startsWith('/bookings/') && method === 'PUT') {
+    const id = parseInt(path.split('/')[2]);
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', () => {
+      const data = JSON.parse(body);
+      db.run(
+        `UPDATE bookings SET room_id = ?, date = ? WHERE id = ?`,
+        [data.room_id, data.date, id],
+        function (err) {
+          if (err) {
+            console.error("Päivitysvirhe:", err.message);
+            res.writeHead(500);
+            res.end(JSON.stringify({ error: "Varausta ei voitu päivittää" }));
+          } else {
+            res.writeHead(200);
+            res.end(JSON.stringify({ success: true }));
+          }
+        }
+      );
+    });
+  }
+
+  // GET /my-bookings/:booker_id
+  else if (path.startsWith('/my-bookings/') && method === 'GET') {
+    const booker_id = parseInt(path.split('/')[2]);
+    const query = `
   SELECT bookings.id, bookings.date, rooms.name AS room_name, bookers.name AS booker_name
   FROM bookings
   JOIN rooms ON bookings.room_id = rooms.id
@@ -143,33 +166,33 @@ else if (path.startsWith('/my-bookings/') && method === 'GET') {
   WHERE bookings.booker_id = ?
 `;
 
-  db.all(query, [booker_id], (err, rows) => {
-    if (err) {
-      res.writeHead(500);
-      res.end(JSON.stringify({ error: "Tietokantavirhe" }));
-    } else {
-      res.writeHead(200);
-      res.end(JSON.stringify(rows));
-    }
-  });
-}
+    db.all(query, [booker_id], (err, rows) => {
+      if (err) {
+        res.writeHead(500);
+        res.end(JSON.stringify({ error: "Tietokantavirhe" }));
+      } else {
+        res.writeHead(200);
+        res.end(JSON.stringify(rows));
+      }
+    });
+  }
 
-// GET /bookers
-else if (path === '/bookers' && method === 'GET') {
-  db.all("SELECT * FROM bookers", (err, rows) => {
-    if (err) {
-      res.writeHead(500);
-      res.end(JSON.stringify({ error: "Tietokantavirhe" }));
-    } else {
-      res.writeHead(200);
-      res.end(JSON.stringify(rows));
-    }
-  });
-}
+  // GET /bookers
+  else if (path === '/bookers' && method === 'GET') {
+    db.all("SELECT * FROM bookers", (err, rows) => {
+      if (err) {
+        res.writeHead(500);
+        res.end(JSON.stringify({ error: "Tietokantavirhe" }));
+      } else {
+        res.writeHead(200);
+        res.end(JSON.stringify(rows));
+      }
+    });
+  }
 
-// GET /all-bookings
-else if (path === '/all-bookings' && method === 'GET') {
-  const query = `
+  // GET /all-bookings
+  else if (path === '/all-bookings' && method === 'GET') {
+    const query = `
     SELECT bookings.id, bookings.room_id, bookings.date, rooms.name AS room_name, bookers.name AS booker_name
     FROM bookings
     JOIN rooms ON bookings.room_id = rooms.id
@@ -177,16 +200,16 @@ else if (path === '/all-bookings' && method === 'GET') {
     ORDER BY bookings.date DESC
   `;
 
-  db.all(query, [], (err, rows) => {
-    if (err) {
-      res.writeHead(500);
-      res.end(JSON.stringify({ error: "Tietokantavirhe" }));
-    } else {
-      res.writeHead(200);
-      res.end(JSON.stringify(rows));
-    }
-  });
-}
+    db.all(query, [], (err, rows) => {
+      if (err) {
+        res.writeHead(500);
+        res.end(JSON.stringify({ error: "Tietokantavirhe" }));
+      } else {
+        res.writeHead(200);
+        res.end(JSON.stringify(rows));
+      }
+    });
+  }
 
 
   // 404 fallback

@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import '../App.css';
+import { useNavigate } from 'react-router-dom'; // Tarvitaan navigointiin
+import { useLocation } from 'react-router-dom';
 
 function Admin() {
+  const location = useLocation();
   const [rooms, setRooms] = useState([]);
   const [name, setName] = useState('');
   const [capacity, setCapacity] = useState('');
   const [description, setDescription] = useState('');
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState(location.state?.message || ''); // vastaanota ilmoitus
   const [allBookings, setAllBookings] = useState([]);
+  const navigate = useNavigate(); // Navigointiin reitille
 
   const fetchRooms = () => {
     fetch('http://localhost:3001/rooms')
@@ -15,14 +19,16 @@ function Admin() {
       .then(data => setRooms(data));
   };
 
-  useEffect(() => {
-    fetchRooms();
-
-    // Hae kaikki varaukset
+  const fetchAllBookings = () => {
     fetch('http://localhost:3001/all-bookings')
       .then(res => res.json())
       .then(data => setAllBookings(data))
       .catch(err => console.error('Virhe varauksien haussa:', err));
+  };
+
+  useEffect(() => {
+    fetchRooms();
+    fetchAllBookings();
   }, []);
 
   const handleAddRoom = (e) => {
@@ -91,6 +97,9 @@ function Admin() {
       .catch(() => alert('Varauksen poistaminen epäonnistui.'));
   };
 
+  const handleEditBooking = (id) => {
+    navigate(`/admin/edit-booking/${id}`);
+  };
 
   return (
     <div className='container'>
@@ -137,7 +146,10 @@ function Admin() {
         {allBookings.map(booking => (
           <li key={booking.id}>
             {booking.room_name}, {booking.date} (varaaja: {booking.booker_name})
+            {' '}
             <button onClick={() => handleDeleteBooking(booking.id)}>Poista</button>
+            {' '}
+            <button onClick={() => handleEditBooking(booking.id)}>Muokkaa</button> {/* Uusi nappi */}
           </li>
         ))}
       </ul>
