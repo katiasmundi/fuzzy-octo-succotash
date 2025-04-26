@@ -58,7 +58,7 @@ Tämä vaihe varmistaa, että projekti rakennetaan (npm run build) ennen kuin se
 package*
 vite*
 
-https://victorious-sea-0f1cafc03.6.azurestaticapps.net/admin
+https://victorious-sea-0f1cafc03.6.azurestaticapps.net/
 
 ### Muita muutoksia
 
