@@ -113,8 +113,8 @@ Onnistumiset: Kun Azure Static Web Apps lähti lopulta toimimaan, oli onnistumis
 | 25.4.2025 | 3 | Vaihe 3  | Lisäominaisuuden rakentaminen (PUT) |
 | 26.4.2025 | 6 | Vaihe 3  | Lisäominaisuuden rakentaminen (PUT) ja muut lisäykset |
 | 26.4.2025 | 4 | Vaihe 3  | Pilvipalvelun rakentaminen ja tehtävän viimeistely ja palautus |
-| 27.4.2025 | 2,5 | Vaihe 4  | Loppuraportin kirjoittaminen, esitys ja palautus |
-| **Yhteensä**  | **43h** |                                 |
+| 27.4.2025 | 4,5 | Vaihe 4  | Loppujulkaisu main-branchille, branchin muutos Azureen. Loppuraportin kirjoittaminen, esitys ja palautus |
+| **Yhteensä**  | **45h** |                                 |
 
 ---
 
