@@ -24,13 +24,13 @@ Kohderyhmä:
 
 | Käyttötapaus | Toteutettu (Kyllä/Ei) | Demo / Huomiot |
 |----------|----------------------|------------------------|
-| Varausnäkymä näyttää tilojen saatavuuden ko. loppuviikon ajalta: punainen varattu/vihreä vapaa. | Kyllä | Toteutettu, näkyy etusivulla. Demovideolla kohdassa xx:xx. |
-| Viikkoja voi selata etusivulla nuolesta eteen- ja taaksepäin. | Kyllä | Toteutettu, näkyy etusivulla. Demovideolla kohdassa xx:xx. |
-| Etusivulta pääsee siirtymään suoraan napista varaussivulle (ja myös muille sivuille yläpalkista). | Kyllä | Toteutettu, näkyy etusivulla ja yläpalkki myös muilla sivuilla. Demovideolla kohdassa xx:xx. |
-| Varaussivulla: Askel 1. Valitse varaajan nimi. Askel 2. Valitse päivämäärä. Askel 3. Valitse neukkari. Askel 4. Klikkaa "varaa". | Kyllä | Toteutettu juuri näin, näkyy Tee varaus -sivulla. Demovideolla kohdassa xx:xx. |
-| Käyttäjä saa tiedon onnistuneesta tai epäonnistuneesta varauksesta. | Kyllä | Toteutettu, varausta vahvistaessa tulee teksti joko onnistuneesta varauksesta, tai epäonnistuneesta, jos ko. huone on jo varattu samalle päivälle. Demovideolla kohdassa xx:xx. |
-| Käyttäjä näkee omat varauksensa toisella sivulla ja voi siellä halutessaan peruuttaa varauksen ko. varauksen kohdalta napista. | Kyllä | Toteutettu, näkyy Omat varaukset -sivulla. Käyttäjä voi lisäksi muokata varauksiaan. Demovideolla kohdassa xx:xx. |
-| Admin voi hallinnoida varauksia ja tiloja erillisellä sivulla, jossa näkyy listana kaikki neukkarit ja varaukset sekä käyttäjät. Näissä on selkeät napit lisää tai poista jne. | Kyllä ja Ei | Toteutettu osittain Admin-sivulla: Huoneita voi lisätä ja poistaa, mutta ei muokata. Varauksia voi muokata ja poistaa. Käyttäjiä ei ole listattu eikä voi lisätä tai poistaa. Syynä puutteisiin on unohdus, sillä huomasin vasta tätä raporttia kirjoittaessa, että olin aikonut tehdä alun perin nuo puuttuvatkin ominaisuudet. Loput olisivat siis jatkokehitystä. Näkyy Demovideolla kohdassa xx:xx. |
+| Varausnäkymä näyttää tilojen saatavuuden ko. loppuviikon ajalta: punainen varattu/vihreä vapaa. | Kyllä | Toteutettu, näkyy etusivulla. Demovideolla kohdassa 01:50. |
+| Viikkoja voi selata etusivulla nuolesta eteen- ja taaksepäin. | Kyllä | Toteutettu, näkyy etusivulla. Demovideolla kohdassa 01:50. |
+| Etusivulta pääsee siirtymään suoraan napista varaussivulle (ja myös muille sivuille yläpalkista). | Kyllä | Toteutettu, näkyy etusivulla ja yläpalkki myös muilla sivuilla. Demovideolla kohdassa 02:05. |
+| Varaussivulla: Askel 1. Valitse varaajan nimi. Askel 2. Valitse päivämäärä. Askel 3. Valitse neukkari. Askel 4. Klikkaa "varaa". | Kyllä | Toteutettu juuri näin, näkyy Tee varaus -sivulla. Demovideolla kohdassa 03:50. |
+| Käyttäjä saa tiedon onnistuneesta tai epäonnistuneesta varauksesta. | Kyllä | Toteutettu, varausta vahvistaessa tulee teksti joko onnistuneesta varauksesta, tai epäonnistuneesta, jos ko. huone on jo varattu samalle päivälle. Demovideolla kohdassa 04:10. |
+| Käyttäjä näkee omat varauksensa toisella sivulla ja voi siellä halutessaan peruuttaa varauksen ko. varauksen kohdalta napista. | Kyllä | Toteutettu, näkyy Omat varaukset -sivulla. Käyttäjä voi lisäksi muokata varauksiaan. Demovideolla kohdassa 05:30. |
+| Admin voi hallinnoida varauksia ja tiloja erillisellä sivulla, jossa näkyy listana kaikki neukkarit ja varaukset sekä käyttäjät. Näissä on selkeät napit lisää tai poista jne. | Kyllä ja Ei | Toteutettu osittain Admin-sivulla: Huoneita voi lisätä ja poistaa, mutta ei muokata. Varauksia voi muokata ja poistaa. Käyttäjiä ei ole listattu eikä voi lisätä tai poistaa. Syynä puutteisiin on unohdus, sillä huomasin vasta tätä raporttia kirjoittaessa, että olin aikonut tehdä alun perin nuo puuttuvatkin ominaisuudet. Loput olisivat siis jatkokehitystä. Näkyy Demovideolla kohdassa 07:45. |
 
 ---
 
@@ -67,7 +67,7 @@ Tässä vaiheessa minun oli tarkoitus jukaista sivusto Azure Static Web Appsissa
 
 Käyttäjätestauksen perusteella valitsin jatkokehityskohteeksi varausten muokkaustoiminnon (PUT), joka vielä puuttui. Tässä oli sopivasti työtä, kun tätä varten jouduin tekemään vielä uuden sivun, EditBooking. Lisäksi tein faviconin ja muuta pientä muutostyötä.
 
-Lähdin ratkomaan uusiksi Azuren ongelmaa ja useamman tunnin googlettelun ja ChatGPT:n kanssa keskustelun jälkeen sain asia kerrallaan ongelmat korjattua ja Azure Static Web Apps lähti toimimaan, jee! Tarkempi kuvaus ratkaisuista [Täällä (Vaihe3)](3_Extra_Feature_or_Improvement.md). Julkaisin vain frontendin Azuressa ja backend pitää käynnistää paikallisesti koneella.
+Lähdin ratkomaan uusiksi Azuren ongelmaa ja useamman tunnin googlettelun ja ChatGPT:n kanssa keskustelun jälkeen sain asia kerrallaan ongelmat korjattua ja Azure Static Web Apps lähti toimimaan, jee! Tarkempi kuvaus ratkaisuista [täällä (Vaihe 3)](3_Extra_Feature_or_Improvement.md). Julkaisin vain frontendin Azuressa ja backend pitää käynnistää paikallisesti koneella.
 
 ## Pohdinta ja tulevaisuuden jatkokehitys
 
