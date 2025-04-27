@@ -42,7 +42,7 @@ Käytetyt teknologiat:
 - Routing: React Router
 - Backend: Node.js + Express-tyylinen oma HTTP-serveri
 - Tietokanta: SQLite
-- Hosting: Azure Static Web Apps (frontend)
+- Hosting: Azure Static Web Apps (frontend) https://victorious-sea-0f1cafc03.6.azurestaticapps.net
 
 Projektissa rakennettiin Node.js:n sisäänrakennetulla http-moduulilla oma kevyt palvelin, joka käsittelee REST API -pyyntöjä (GET, POST, PUT, DELETE) ilman ulkopuolisia kirjastoja kuten Express. Palvelin muistuttaa rakenteeltaan Express-sovellusta, mutta kaikki toiminnot toteutettiin itse suoraan Node.js:n tarjoamilla perustoiminnoilla.
 
