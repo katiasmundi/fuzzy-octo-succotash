@@ -24,7 +24,7 @@ Kohderyhmä:
 
 | Käyttötapaus | Toteutettu (Kyllä/Ei) | Demo / Huomiot |
 |----------|----------------------|------------------------|
-| Varausnäkymä näyttää tilojen saatavuuden ko. loppuviikon ajalta: punainen varattu/vihreä vapaa | Kyllä | Toteutettu, näkyy etusivulla. Demovideolla kohdassa xx:xx. |
+| Varausnäkymä näyttää tilojen saatavuuden ko. loppuviikon ajalta: punainen varattu/vihreä vapaa. | Kyllä | Toteutettu, näkyy etusivulla. Demovideolla kohdassa xx:xx. |
 | Viikkoja voi selata etusivulla nuolesta eteen- ja taaksepäin. | Kyllä | Toteutettu, näkyy etusivulla. Demovideolla kohdassa xx:xx. |
 | Etusivulta pääsee siirtymään suoraan napista varaussivulle (ja myös muille sivuille yläpalkista). | Kyllä | Toteutettu, näkyy etusivulla ja yläpalkki myös muilla sivuilla. Demovideolla kohdassa xx:xx. |
 | Varaussivulla: Askel 1. Valitse varaajan nimi. Askel 2. Valitse päivämäärä. Askel 3. Valitse neukkari. Askel 4. Klikkaa "varaa". | Kyllä | Toteutettu juuri näin, näkyy Tee varaus -sivulla. Demovideolla kohdassa xx:xx. |
@@ -38,11 +38,13 @@ Kohderyhmä:
 
 Käytetyt teknologiat:
 
-Frontend: React + Vite
+- Frontend: React + Vite
 - Routing: React Router
 - Backend: Node.js + Express-tyylinen oma HTTP-serveri
 - Tietokanta: SQLite
 - Hosting: Azure Static Web Apps (frontend)
+
+Projektissa rakennettiin Node.js:n sisäänrakennetulla http-moduulilla oma kevyt palvelin, joka käsittelee REST API -pyyntöjä (GET, POST, PUT, DELETE) ilman ulkopuolisia kirjastoja kuten Express. Palvelin muistuttaa rakenteeltaan Express-sovellusta, mutta kaikki toiminnot toteutettiin itse suoraan Node.js:n tarjoamilla perustoiminnoilla.
 
 Arkkitehtuuriratkaisut:
 
@@ -55,13 +57,7 @@ Arkkitehtuuriratkaisut:
 
 ## Kehitysprosessi
 
-_Summarize your progress from start to finish, mentioning key decisions or changes along the way._
-
-### Vaihe 1: Määrittely ja suunnittelu
-
 Vaihe 1. oli sujuva ja minulla oli heti selkeä visio lopputuloksesta. Lopputulos onkin aika lailla sitä, mitä ajattelin. Tekninen suunnittelu oli myös aika helppoa ja tein sivuston aika lailla niillä teknisillä ratkaisuilla, millä ajattelinkin.
-
-### Vaihe 2: Perusrakenne: frontend + backend + tietokanta
 
 Toinenkin vaihe meni suurimmaksi osin sujuvasti. Käytin aiempia tämän kurssin harjoitustehtäviä sekä Chat GPT:tä apuna sivuston rakentamisessa. Käytin tässä vaiheessa myös jonkin verran aikaa sivuston ulkoasun siistimiseen ja muokkaamiseen, mutta päätin että keskityn tehtävässä kuitenkin enemmän sisältöön, kuin ulkoasuun.
 
@@ -69,11 +65,9 @@ Tein tässä vaiheessa myös käyttäjätestausta puolisoni avulla. Hänellä ei
 
 Tässä vaiheessa minun oli tarkoitus jukaista sivusto Azure Static Web Appsissa, mutta tämän kanssa tuli isoja ongelmia enkä lopulta ehtinyt saada sitä kuntoon ennen palautuspäivää. Sain Azuren toimimaan, mutta sivu näkyi valkoisena ja antoi virheilmoitusta selaimen Developer Toolsissa. Päätin yrittää jatkaa selvittelyä seuraavassa vaiheessa.
 
-### Vaihe 3: Jatkokehitys, kuten varauksen muokkaus sekä Azure Static Web Apps
-
 Käyttäjätestauksen perusteella valitsin jatkokehityskohteeksi varausten muokkaustoiminnon (PUT), joka vielä puuttui. Tässä oli sopivasti työtä, kun tätä varten jouduin tekemään vielä uuden sivun, EditBooking. Lisäksi tein faviconin ja muuta pientä muutostyötä.
 
-Lähdin ratkomaan uusiksi Azuren ongelmaa ja useamman tunnin googlettelun ja ChatGPT:n kanssa keskustelun jälkeen sain asia kerrallaan ongelmat korjattua ja Azure Static Web Apps lähti toimimaan, jee! Tarkempi kuvaus ratkaisuista [Täällä (Vaihe3)](3_Extra_Feature_or_Improvement.md)
+Lähdin ratkomaan uusiksi Azuren ongelmaa ja useamman tunnin googlettelun ja ChatGPT:n kanssa keskustelun jälkeen sain asia kerrallaan ongelmat korjattua ja Azure Static Web Apps lähti toimimaan, jee! Tarkempi kuvaus ratkaisuista [Täällä (Vaihe3)](3_Extra_Feature_or_Improvement.md). Julkaisin vain frontendin Azuressa ja backend pitää käynnistää paikallisesti koneella.
 
 ## Pohdinta ja tulevaisuuden jatkokehitys
 
@@ -96,6 +90,7 @@ Mahdolliset tulevat parannukset:
 - Varauskalenterin visuaalinen parantaminen
 - Ulkoasun kehitys
 - Varaus tuntikohtaiseksi nykyisen päiväkohtaisen sijaan
+- Myös backend Azureen
 
 Ja moka minkä tein, on että en lukenut enää loppuvaiheessa tarpeeksi tarkasti vaiheen 1. raporttia läpi, sillä muistin vasta tätä kirjoittaessa, että minulla oli tarkoitus tehdä admin-näkymään myös esim. käyttäjienhallinta. Tämä olisi ollut nopea toteuttaa, joten vähän jäi harmittamaan.
 
